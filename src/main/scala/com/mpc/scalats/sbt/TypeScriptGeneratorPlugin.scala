@@ -24,6 +24,8 @@ object TypeScriptGeneratorPlugin extends AutoPlugin {
       "Print stream to write. Defaults to Console.out")
     val prependIPrefix =
       settingKey[Boolean]("Whether to prefix interface names with I")
+    val caseClasses =
+      settingKey[Seq[String]]("Case classes to generate. It will be appended to command line arguments")
   }
 
   import autoImport._
@@ -43,15 +45,16 @@ object TypeScriptGeneratorPlugin extends AutoPlugin {
       val cp: Seq[File] = (fullClasspath in Runtime).value.files
       val cpUrls = cp.map(_.asURL).toArray
       val cl = new URLClassLoader(cpUrls, ClassLoader.getSystemClassLoader)
-
-      TypeScriptGenerator.generateFromClassNames(args.toList, cl)
+      val cc = caseClasses.value.toList
+      TypeScriptGenerator.generateFromClassNames(args.toList ++ cc, cl)
     },
     emitInterfaces in generateTypeScript := true,
     emitClasses in generateTypeScript := false,
     optionToNullable in generateTypeScript := true,
     optionToUndefined in generateTypeScript := false,
     outputFile in generateTypeScript := None,
-    prependIPrefix := false
+    prependIPrefix := false,
+    caseClasses := Seq.empty[String]
   )
 
 }
