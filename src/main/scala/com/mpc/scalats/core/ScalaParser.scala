@@ -65,7 +65,7 @@ object ScalaParser {
         BooleanRef
       case "String" =>
         StringRef
-      case "List" | "Seq" | "Set" =>
+      case "Array" | "List" | "Seq" | "Set" | "Vector" =>
         val innerType = scalaType.asInstanceOf[scala.reflect.runtime.universe.TypeRef].args.head
         SeqRef(getTypeRef(innerType, typeParams))
       case "Option" =>
