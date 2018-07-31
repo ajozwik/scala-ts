@@ -47,7 +47,7 @@ class ScalaParserSpec extends FlatSpec with Matchers {
     parsed should have length 6
   }
 
-  it should "correctly hadle either types" in {
+  it should "correctly handle either types" in {
     val parsed = ScalaParser.parseCaseClasses(List(TestTypes.TestClass7Type))
     val expected = CaseClass(
       "TestClass7",
@@ -61,16 +61,18 @@ class ScalaParserSpec extends FlatSpec with Matchers {
 
 object TestTypes {
 
-  implicit val mirror = runtimeMirror(getClass.getClassLoader)
-  val TestClass1Type = typeFromName("com.mpc.scalats.core.TestTypes.TestClass1")
-  val TestClass2Type = typeFromName("com.mpc.scalats.core.TestTypes.TestClass2")
-  val TestClass3Type = typeFromName("com.mpc.scalats.core.TestTypes.TestClass3")
-  val TestClass4Type = typeFromName("com.mpc.scalats.core.TestTypes.TestClass4")
-  val TestClass5Type = typeFromName("com.mpc.scalats.core.TestTypes.TestClass5")
-  val TestClass6Type = typeFromName("com.mpc.scalats.core.TestTypes.TestClass6")
-  val TestClass7Type = typeFromName("com.mpc.scalats.core.TestTypes.TestClass7")
+  implicit val mirror: Mirror = runtimeMirror(getClass.getClassLoader)
+  val TestClass1Type: Type = typeFromClass(classOf[TestClass1])
+  val TestClass3Type: Type = typeFromClass(classOf[TestClass3[_]])
+  val TestClass4Type: Type = typeFromClass(classOf[TestClass4[_]])
+  val TestClass2Type: Type = typeFromClass(classOf[TestClass2[_]])
+  val TestClass5Type: Type = typeFromClass(classOf[TestClass5[_]])
+  val TestClass6Type: Type = typeFromClass(classOf[TestClass6[_]])
+  val TestClass7Type: Type = typeFromClass(classOf[TestClass7[_]])
 
-  private def typeFromName(name: String) = mirror.staticClass(name).toType
+
+  private def typeFromClass[T](clazz: Class[T])(implicit runtimeMirror: Mirror): Type =
+    runtimeMirror.classSymbol(clazz).toType
 
   case class TestClass1(name: String)
 
