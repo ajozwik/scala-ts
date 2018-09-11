@@ -18,7 +18,7 @@ object TypeScriptEmitter {
   }
 
   private def emitInterfaceDeclaration(decl: InterfaceDeclaration, out: PrintStream) = {
-    val InterfaceDeclaration(name, members, typeParams) = decl
+    val InterfaceDeclaration(name, members, _) = decl
     out.print(s"export interface $name")
     emitTypeParams(decl.typeParams, out)
     out.println(" {")
@@ -30,23 +30,43 @@ object TypeScriptEmitter {
   }
 
   private def emitClassDeclaration(decl: ClassDeclaration, out: PrintStream) = {
-    val ClassDeclaration(name, ClassConstructor(parameters), typeParams) = decl
+    val ClassDeclaration(name, ClassConstructor(parameters), _) = decl
     out.print(s"export class $name")
     emitTypeParams(decl.typeParams, out)
     out.println(" {")
+    parameters.foreach{
+      parameter =>
+        printParameter(parameter,out)
+        out.println(";")
+    }
+    out.println("")
     out.println(s"\tconstructor(")
     parameters.zipWithIndex foreach { case (parameter, index) =>
-      val accessModifier = parameter.accessModifier match {
-        case Some(Public) => "public "
-        case Some(Private) => "private "
-        case None => ""
-      }
-      out.print(s"\t\t$accessModifier${parameter.name}: ${getTypeRefString(parameter.typeRef)}")
+      printParameter(parameter,out,false)
       val endLine = if (index + 1 < parameters.length) "," else ""
       out.println(endLine)
     }
-    out.println("\t) {}")
+    out.println("\t) {")
+    parameters.foreach{
+      parameter =>
+        val name = parameter.name
+        out.println(s"\t\tthis.$name = $name;")
+    }
     out.println("}")
+    out.println("}")
+  }
+
+  private def printParameter(parameter:ClassConstructorParameter, out: PrintStream, addAccessModifier:Boolean = true): Unit ={
+    val accessModifier = parameter.accessModifier match {
+      case Some(Public) => "public "
+      case Some(Private) => "private "
+      case None => ""
+    }
+    out.print(s"\t\t")
+    if(addAccessModifier){
+      out.print(s"$accessModifier")
+    }
+    out.print(s"${parameter.name}: ${getTypeRefString(parameter.typeRef)}")
   }
 
   private def emitTypeParams(params: List[String], out: PrintStream) =

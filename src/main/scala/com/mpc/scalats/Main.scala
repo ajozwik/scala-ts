@@ -6,7 +6,7 @@ import com.mpc.scalats.core.TypeScriptGenerator
 object Main {
 
   def main(args: Array[String]) {
-    TypeScriptGenerator.generateFromClassNames(args.toList)(Config())
+    TypeScriptGenerator.generateFromClassNames(args.toList)(Config(emitClasses = true, emitInterfaces = false))
   }
 
 }

@@ -31,12 +31,12 @@ lazy val pomSettings = Seq(
 lazy val root = (project in file(".")).
   settings(
     name := "scala-ts",
-    version := "0.4.2",
+    version := "0.4.4",
     organization := "com.github.miloszpp",
     scalaVersion := scalaV,
     mainClass in(Compile, run) := Some("com.mpc.scalats.Main"),
     sbtPlugin := true,
-    sbtVersion := "1.2.0"
+    sbtVersion := "1.2.1"
   )
   .settings(pomSettings)
 
