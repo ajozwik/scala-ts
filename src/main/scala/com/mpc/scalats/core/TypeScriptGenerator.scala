@@ -1,7 +1,5 @@
 package com.mpc.scalats.core
 
-import java.io.{File, PrintStream}
-
 import com.mpc.scalats.configuration.Config
 
 import scala.reflect.runtime.universe._
@@ -27,6 +25,8 @@ object TypeScriptGenerator {
     val outputStream = config.outputStream.getOrElse(Console.out)
     val scalaCaseClasses = ScalaParser.parseCaseClasses(caseClasses)
     val typeScriptInterfaces = Compiler.compile(scalaCaseClasses)
+    outputStream.println("/* tslint:disable */")
+    outputStream.println()
     TypeScriptEmitter.emit(typeScriptInterfaces,outputStream)
   }
 
