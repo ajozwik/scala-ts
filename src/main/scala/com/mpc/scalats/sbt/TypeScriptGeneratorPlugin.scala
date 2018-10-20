@@ -26,6 +26,8 @@ object TypeScriptGeneratorPlugin extends AutoPlugin {
       settingKey[Boolean]("Whether to prefix interface names with I")
     val caseClasses =
       settingKey[Seq[String]]("Case classes to generate. It will be appended to command line arguments")
+    val replaceAnyVals =
+      settingKey[Boolean]("case class AnyVals will be replaced by a type alias")
   }
 
   import autoImport._
@@ -38,7 +40,8 @@ object TypeScriptGeneratorPlugin extends AutoPlugin {
         (optionToNullable in generateTypeScript).value,
         (optionToUndefined in generateTypeScript).value,
         (outputFile in generateTypeScript).value,
-        (prependIPrefix in generateTypeScript).value
+        (prependIPrefix in generateTypeScript).value,
+        (replaceAnyVals in generateTypeScript).value
       )
 
       val args = spaceDelimited("").parsed
@@ -53,6 +56,7 @@ object TypeScriptGeneratorPlugin extends AutoPlugin {
     optionToNullable in generateTypeScript := true,
     optionToUndefined in generateTypeScript := false,
     outputFile in generateTypeScript := None,
+    replaceAnyVals in generateTypeScript := true,
     prependIPrefix := false,
     caseClasses := Seq.empty[String]
   )

@@ -29,7 +29,8 @@ object ScalaParser {
     CaseClass(
       caseClassType.typeSymbol.name.toString,
       members.toList,
-      typeParams
+      typeParams,
+      caseClassType.baseClasses.contains(typeOf[AnyVal].typeSymbol)
     )
   }
 
