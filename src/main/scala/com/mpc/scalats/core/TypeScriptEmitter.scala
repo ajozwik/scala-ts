@@ -60,7 +60,8 @@ object TypeScriptEmitter {
     case NumberRef => "number"
     case BooleanRef => "boolean"
     case StringRef => "string"
-    case DateRef | DateTimeRef => "Date"
+    case DateRef  => "string"
+    case DateTimeRef => "Date"
     case ArrayRef(innerType) => s"${getTypeRefString(innerType)}[]"
     case CustomTypeRef(name, params) if params.isEmpty => name
     case CustomTypeRef(name, params) if params.nonEmpty =>

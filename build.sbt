@@ -1,7 +1,7 @@
 import sbt.Keys._
 
 
-lazy val scalaV = "2.12.6"
+lazy val scalaV = "2.12.7"
 
 lazy val pomSettings = Seq(
   publishMavenStyle := true,
@@ -31,12 +31,12 @@ lazy val pomSettings = Seq(
 lazy val root = (project in file(".")).
   settings(
     name := "scala-ts",
-    version := "0.4.2",
+    version := "0.4.6",
     organization := "com.github.miloszpp",
     scalaVersion := scalaV,
     mainClass in(Compile, run) := Some("com.mpc.scalats.Main"),
     sbtPlugin := true,
-    sbtVersion := "1.2.0"
+    sbtVersion := "1.2.6"
   )
   .settings(pomSettings)
 
