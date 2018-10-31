@@ -73,8 +73,10 @@ object ScalaParser {
         OptionRef(getTypeRef(innerType, typeParams))
       case "LocalDate" =>
         DateRef
-      case "Instant" | "Timestamp" | "LocalDateTime" | "ZonedDateTime" =>
+      case "Instant" | "Timestamp" | "ZonedDateTime" =>
         DateTimeRef
+      case "LocalDateTime" =>
+        StringRef
       case typeParam if typeParams.contains(typeParam) =>
         TypeParamRef(typeParam)
       case _ if isCaseClass(scalaType) =>
