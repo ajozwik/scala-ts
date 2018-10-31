@@ -31,7 +31,7 @@ lazy val pomSettings = Seq(
 lazy val root = (project in file(".")).
   settings(
     name := "scala-ts",
-    version := "0.4.7",
+    version := "0.4.8",
     organization := "com.github.miloszpp",
     scalaVersion := scalaV,
     mainClass in(Compile, run) := Some("com.mpc.scalats.Main"),
