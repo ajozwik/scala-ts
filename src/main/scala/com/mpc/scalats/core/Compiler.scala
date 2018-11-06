@@ -14,8 +14,21 @@ object Compiler {
         else List.empty
       val clazz =
         if (config.emitClasses) List(compileClass(scalaClass)) else List.empty
-      interface ++ clazz
+      if (config.replaceAnyVals && scalaClass.isAnyVal)
+        List(compileTypeAlias(scalaClass))
+      else
+        interface ++ clazz
     }
+  }
+
+  private def compileTypeAlias(scalaClass: ScalaModel.CaseClass)(implicit config: Config) = {
+    TypeScriptModel.TypeAlias(
+      scalaClass.name,
+      compileTypeRef(
+        scalaClass.members.head.typeRef,
+        inInterfaceContext = true
+      )
+    )
   }
 
   private def compileInterface(scalaClass: ScalaModel.CaseClass)(implicit config: Config) = {

@@ -14,6 +14,8 @@ object TypeScriptModel {
 
   case class InterfaceDeclaration(name: String, members: List[Member], typeParams: List[String]) extends Declaration
 
+  case class TypeAlias(name: String, typeRef: TypeRef) extends Declaration
+
   case class Member(name: String, typeRef: TypeRef)
 
   case class ClassDeclaration(name: String, constructor: ClassConstructor, typeParams: List[String]) extends Declaration

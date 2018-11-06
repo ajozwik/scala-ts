@@ -14,7 +14,15 @@ object TypeScriptEmitter {
         emitInterfaceDeclaration(decl, out)
       case decl: ClassDeclaration =>
         emitClassDeclaration(decl, out)
+      case decl: TypeAlias =>
+        emitTypeAlias(decl, out)
     }
+  }
+
+  private def emitTypeAlias(desc: TypeAlias, out: PrintStream) = {
+    val TypeAlias(name, typeRef) = desc
+    out.print(s"export type ${name} = ${getTypeRefString(typeRef)};")
+    out.println()
   }
 
   private def emitInterfaceDeclaration(decl: InterfaceDeclaration, out: PrintStream) = {
