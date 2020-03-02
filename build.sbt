@@ -1,7 +1,8 @@
 import sbt.Keys._
 
+lazy val scalaV = "2.13.1"
 
-lazy val scalaV = "2.12.7"
+ThisBuild / scalaVersion := scalaV
 
 lazy val pomSettings = Seq(
   publishMavenStyle := true,
@@ -28,20 +29,16 @@ lazy val pomSettings = Seq(
       </developers>
 )
 
-lazy val root = (project in file(".")).
-  settings(
+lazy val root = (project in file("."))
+  .settings(
     name := "scala-ts",
-    version := "0.4.9",
     organization := "com.github.miloszpp",
-    scalaVersion := scalaV,
-    mainClass in(Compile, run) := Some("com.mpc.scalats.Main"),
-    sbtPlugin := true,
-    sbtVersion := "1.2.6"
+    mainClass in (Compile, run) := Some("com.mpc.scalats.Main")
   )
   .settings(pomSettings)
 
 libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-reflect" % scalaV,
   "ch.qos.logback" % "logback-classic" % "1.2.3",
-  "org.scalatest" %% "scalatest" % "3.0.5" % "test"
+  "org.scalatest" %% "scalatest" % "3.1.0" % "test"
 )
